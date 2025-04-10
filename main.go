@@ -3,14 +3,15 @@ package main
 import (
 	"log"
 
-
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/pultrini/CRUD-GO/src/configuration/logger"
 	"github.com/pultrini/CRUD-GO/src/controller/routes"
 )
 
 
 func main(){
+	logger.Info("About to start user application")
 	err := godotenv.Load()
 	if err != nil {
 	  log.Fatal("Error loading .env file")

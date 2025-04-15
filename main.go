@@ -1,15 +1,15 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+
 	"github.com/pultrini/CRUD-GO/src/configuration/database/mongodb"
 	"github.com/pultrini/CRUD-GO/src/configuration/logger"
-	"github.com/pultrini/CRUD-GO/src/controller"
 	"github.com/pultrini/CRUD-GO/src/controller/routes"
-	"github.com/pultrini/CRUD-GO/src/model/service"
 )
 
 
@@ -20,12 +20,14 @@ func main(){
 	  log.Fatal("Error loading .env file")
 	}
 
-	mongodb.InitConnection()
-
+	database, err := mongodb.NewMongoDBConnection(context.Background())
+	if err != nil{
+		log.Fatalf("Error trying to connect to database, erro=%s \n", err.Error())
+		return
+	}
 
 	//Init the dependecies
-	service :=service.NewUserDomainService()
-	userController := controller.NewUserControllerInterface(service)
+	userController := InitDependencies(database)
 
 	router := gin.Default()
 	

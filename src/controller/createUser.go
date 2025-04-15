@@ -8,7 +8,7 @@ import (
 	"github.com/pultrini/CRUD-GO/src/configuration/validation"
 	"github.com/pultrini/CRUD-GO/src/controller/model/request"
 	"github.com/pultrini/CRUD-GO/src/model"
-	"github.com/pultrini/CRUD-GO/src/model/service"
+	"github.com/pultrini/CRUD-GO/src/view"
 	"go.uber.org/zap"
 )
 
@@ -17,7 +17,7 @@ var (
 )
 
 
-func CreateUser(c *gin.Context) {
+func (uc *userControllerInterface) CreateUser(c *gin.Context) {
 	logger.Info("Init CreateUser controller", zap.String("journey", "createUser"),
 )
 	var userRequest request.UserRequest
@@ -32,10 +32,8 @@ func CreateUser(c *gin.Context) {
 	
 	domain := model.NewUserDomain(userRequest.Email, userRequest.Password, 
 		userRequest.Name, userRequest.Age)
-
-	service := service.NewUserDomainService()
 	
-	if err := service.CreateUser(domain); err != nil{
+	if err := uc.service.CreateUser(domain); err != nil{
 		c.JSON(err.Code, err)
 		return
 	}
@@ -43,5 +41,7 @@ func CreateUser(c *gin.Context) {
 	logger.Info("User created successfuly",
 	zap.String("journey", "CreateUser"))
 
-	c.String(http.StatusOK, "")
+	c.JSON(http.StatusOK, view.ConvertDomainToResponse(
+		domain,
+	))
 }

@@ -18,6 +18,8 @@ Uma API CRUD (Create, Read, Update, Delete) implementada em Go usando o framewor
 - **Gin Framework**: Criação de rotas
 - **Arquitetura**: Organização de projetos em camadas (configuration, models, view, controler)
 - **Error Handling**: Padronização de respostas de erro
+- **Encriptografia de senhas**: Para maior segurança haverá encriptografia de senhas.
+
 
 ### Boas Práticas
 - Clean Architecture
